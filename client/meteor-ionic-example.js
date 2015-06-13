@@ -29,16 +29,16 @@
       });
   }]);
 
-  Meteor.subscribe('Events');
+  app.controller('TodoCtrl', ['$scope', '$meteorCollection', '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$ionicPopup', '$cordovaDatePicker','$meteor',
+    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicPopup, $cordovaDatePicker, $meteor) {
 
-  app.controller('TodoCtrl', ['$scope', '$meteorCollection', '$ionicModal', '$rootScope', '$ionicSideMenuDelegate', '$ionicPopup', '$cordovaDatePicker',
-    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicPopup, $cordovaDatePicker) {
+      $scope.date = moment(new Date()).format('YYYY/MM/DD');
 
       $scope.Events = $meteorCollection(Events);
 
-      $scope.search = {
-        date:null
-      };
+      $meteor.autorun($scope, function() {
+        $meteor.subscribe('Events',{}, $scope.getReactively('date'));
+      });
 
       // Create our modal
       $ionicModal.fromTemplateUrl('client/new-task.ng.html', function (modal) {
@@ -55,7 +55,7 @@
 
       $scope.closeNewTask = function() {
         $scope.eventModal.hide();
-      }
+      };
 
       //Cleanup the modal when we are done with it!
       $scope.$on('$destroy', function() {
@@ -67,12 +67,12 @@
       };
 
       $scope.setDate = function() {
-        var options = {date: new Date(), mode: 'date'};
+        var options = {date: moment($scope.date,'YYYY/MM/DD').toDate(), mode: 'date'};
         //var options = {date: new Date(), mode: 'time'}; for time
-        $cordovaDatePicker.show(options).then(function(date){
-          $scope.search.date = date;
+        $cordovaDatePicker.show(options).then(function (date) {
+          $scope.date = moment(date).format('YYYY/MM/DD');
         });
-      }
+      };
 
       $scope.pickDate = function(task) {
         var options = {date: new Date(), mode: 'date'};
