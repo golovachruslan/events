@@ -24,9 +24,9 @@ Meteor.startup(function () {
                     time: $item.find('.date-time span').text(),
                     image: $item.find('.post-thumbnail img').attr('src'),
                     cost: $item.find('.cost').text(),
-                    region: $item.find('.region').text()
+                    region: $item.find('.region').text(),
+                    categories: []
                 };
-
 
                 Meteor.call('saveEvent', event);
 
