@@ -16,3 +16,5 @@ npm-container
 dburles:collection-helpers
 pbastowski:angular-babel
 momentjs:moment
+erasaur:meteor-lodash
+aldeed:geocoder
