@@ -1,0 +1,28 @@
+<ion-view view-title="Events">
+    <ion-header-bar class="bar bar-header bar-calm">
+        <h1 class="title">{{'Events'}}</h1>
+        <!-- New Task button-->
+        <button class="button button-icon" ng-click="newEvent()">
+            <i class="icon ion-compose"></i>
+        </button>
+    </ion-header-bar>
+    <ion-content has-header="true" scroll="true">
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                {{ date }} <button class="button button-icon" ng-click="setDate()">
+                <i class="icon ion-clock"></i></button>
+            </label>
+        </div>
+
+        <div class="list">
+            <a ng-repeat="event in Events" class="item item-thumbnail-left" href="#">
+                <img ng-src="{{event.image}}">
+                <h2>{{event.title}}</h2>
+                <p>{{event.time}}</p>
+                <p>{{event.cost}}</p>
+                <p>{{event.region}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>
