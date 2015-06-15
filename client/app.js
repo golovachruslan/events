@@ -35,7 +35,16 @@
               controller: 'EventsCtrl'
             }
           }
-      });
+      })
+      .state('tabs.event', {
+          url: '/event/:id',
+          views: {
+            'events-tab': {
+              templateUrl: 'client/event.ng.html',
+              controller:'EventCtrl'
+            }
+          }
+        });
   }]);
 
   app.controller('EventsCtrl',
@@ -43,10 +52,9 @@
 
       $scope.date = moment(new Date()).format('YYYY/MM/DD');
 
-      $scope.Events = $meteorCollection(Events);
-
       $meteor.autorun($scope, function() {
         $meteor.subscribe('Events',{}, $scope.getReactively('date'));
+        $scope.Events = $meteorCollection(Events);
       });
 
       // Create our modal
@@ -87,4 +95,12 @@
         });
       }
     }
+  );
+
+  app.controller('EventCtrl',
+      function ($scope, $meteorCollection, $rootScope, $meteor, $stateParams) {
+
+        $scope.event = $meteor.object(Events, $stateParams.id);
+
+      }
   );
