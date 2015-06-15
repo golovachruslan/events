@@ -1,12 +1,16 @@
 <ion-view view-title="Event">
     <ion-content class="padding">
         <div class="list card">
-            <div class="item item-avatar">
-                <img src="mcfly.jpg">
+            <div class="item">
 
-                <h2>{{event.title}}</h2>
+                <h2><a ng-href="{{event.link}}">{{event.title}}</a></h2>
 
-                <p>{{event.time}}</p>
+                <p>{{getDate()}}, {{event.time}}</p>
+
+                <p><span ng-class="{'cost-free':event.cost.indexOf('FREE') != -1,'cost':event.cost.indexOf('FREE') === -1}">{{event.cost}}</span></p>
+
+                <p ng-if="event.address"><i class="icon ion-map"></i> {{event.address}}</p>
+
             </div>
 
             <div class="item item-body">
@@ -15,6 +19,8 @@
                 <p>
                     {{event.description}}
                 </p>
+
+                <h4>powered by <a href="http://sf.funcheap.com" target="_blank">Funcheap SF</a></h4>
 
                 <p>
                     <a href="#" class="subdued">1 Like</a>

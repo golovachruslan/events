@@ -13,7 +13,7 @@
                 <img ng-src="{{event.image}}">
                 <h2>{{event.title}}</h2>
                 <p>{{event.time}}</p>
-                <p>{{event.cost}}</p>
+                <p><span ng-class="{'cost-free':event.cost.indexOf('FREE') != -1,'cost':event.cost.indexOf('FREE') === -1}">{{event.cost}}</span></p>
                 <p>{{event.region}}</p>
             </a>
         </div>

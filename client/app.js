@@ -102,5 +102,9 @@
 
         $scope.event = $meteor.object(Events, $stateParams.id);
 
+        $scope.getDate = function () {
+          return moment($scope.event.date, "YYYY/MM/DD").format("dddd, MMMM Do");
+        }
+
       }
   );

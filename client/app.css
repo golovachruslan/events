@@ -1,1 +1,13 @@
 /* CSS declarations go here */
+a {
+    color: #0078A8;
+    text-decoration: none;
+}
+
+.cost {
+    color: #ef473a;
+}
+
+.cost-free {
+    color: #5fd30a;
+}
