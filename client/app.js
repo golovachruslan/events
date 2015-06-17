@@ -50,15 +50,18 @@
   app.controller('EventsCtrl',
     function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor) {
 
-      $scope.date = moment(new Date()).format('YYYY/MM/DD');
+      $scope.search = {
+        query: '',
+        date : moment(new Date()).format('YYYY/MM/DD')
+      };
 
       $meteor.autorun($scope, function() {
-        $meteor.subscribe('Events',{}, $scope.getReactively('date'));
+        $meteor.subscribe('Events',{}, $scope.getReactively('search', true));
         $scope.Events = $meteorCollection(Events);
       });
 
       // Create our modal
-      $ionicModal.fromTemplateUrl('client/new-task.ng.html', function (modal) {
+      $ionicModal.fromTemplateUrl('client/filters.ng.html', function (modal) {
         $scope.eventModal = modal;
       }, {
         scope: $scope,
@@ -78,7 +81,7 @@
         var options = {date: moment($scope.date,'YYYY/MM/DD').toDate(), mode: 'date', allowOldDates: false};
         //var options = {date: new Date(), mode: 'time'}; for time
         $cordovaDatePicker.show(options).then(function (date) {
-          $scope.date = moment(date).format('YYYY/MM/DD');
+          $scope.search.date = moment(date).format('YYYY/MM/DD');
         });
       };
 
