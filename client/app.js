@@ -52,7 +52,7 @@
 
       $scope.search = {
         query: '',
-        date : moment(new Date()).format('YYYY/MM/DD')
+        date: moment(new Date()).format('YYYY/MM/DD')
       };
 
       $meteor.autorun($scope, function() {
@@ -62,11 +62,18 @@
 
       // Create our modal
       $ionicModal.fromTemplateUrl('client/filters.ng.html', function (modal) {
+
         $scope.eventModal = modal;
+
       }, {
         scope: $scope,
         animation: 'slide-in-up'
       });
+
+      $scope.applyFilters = function () {
+        angular.copy($scope.modalData, $scope.search);
+        $scope.eventModal.hide();
+      };
 
       $scope.closeNewTask = function() {
         $scope.eventModal.hide();
@@ -81,22 +88,24 @@
         var options = {date: moment($scope.date,'YYYY/MM/DD').toDate(), mode: 'date', allowOldDates: false};
         //var options = {date: new Date(), mode: 'time'}; for time
         $cordovaDatePicker.show(options).then(function (date) {
-          $scope.search.date = moment(date).format('YYYY/MM/DD');
+          $scope.modalData.date = moment(date).format('YYYY/MM/DD');
         });
       };
 
-      $scope.newEvent = function () {
-        $scope.task = {};
+      $scope.showFilters = function () {
+        $scope.modalData = angular.copy($scope.search);
         $scope.eventModal.show();
       };
 
-      $scope.pickDate = function(task) {
-        var options = {date: new Date(), mode: 'date'};
-        //var options = {date: new Date(), mode: 'time'}; for time
-        $cordovaDatePicker.show(options).then(function(date){
-          task.date = date;
-        });
-      }
+
+      /*$ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });*/
+
     }
   );
 
