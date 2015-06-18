@@ -5,9 +5,15 @@ Meteor.publish('Events', function (options, search) {
 
     date = date || moment().format('YYYY/MM/DD');
 
-    return Events.find({
+    var qq = {
         'title': {'$regex': '.*' + (query || '') + '.*', '$options': 'i'},
-        $and: [{date: date}]
-    }, options);
+        '$and': [{date: date}]
+    };
+
+    if (search.onlyFree) {
+        qq['$and'].push({cost: 'FREE'});
+    }
+
+    return Events.find(qq, options);
 
 });

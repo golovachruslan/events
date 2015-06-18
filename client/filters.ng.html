@@ -11,8 +11,9 @@
 <ion-content has-header="true" scroll="false">
   <div class="list">
     <label class="item item-input">
-        Date <button class="button button-clear button-positive" ng-click="setDate()">{{ modalData.date }}</button>
+        Date <button class="button button-clear button-positive" ng-click="setDate()">{{ formatDate(modalData.date) }}</button>
     </label>
+      <ion-toggle ng-model="modalData.onlyFree">Only Free events</ion-toggle>
   </div>
 </ion-content>
 </div>

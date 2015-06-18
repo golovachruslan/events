@@ -11,8 +11,9 @@
             </button>
         </div>
 
-        <div class="list list-inset">
-                {{ search.date }}
+        <div style="padding-left: 10px;">
+            <span>{{ formatDate(search.date) }}</span>
+            <span ng-if="search.onlyFree" class="cost-free">, FREE</span>
         </div>
 
         <ion-list class="list" can-swipe="true">

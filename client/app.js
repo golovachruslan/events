@@ -52,7 +52,8 @@
 
       $scope.search = {
         query: '',
-        date: moment(new Date()).format('YYYY/MM/DD')
+        date: moment(new Date()).format('YYYY/MM/DD'),
+        onlyFree: false
       };
 
       $meteor.autorun($scope, function() {
@@ -97,6 +98,9 @@
         $scope.eventModal.show();
       };
 
+      $scope.formatDate = function (date) {
+        return moment(date, "YYYY/MM/DD").format("dddd, MMMM Do");
+      };
 
       /*$ionicLoading.show({
         content: 'Loading',
