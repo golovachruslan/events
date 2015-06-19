@@ -14,6 +14,8 @@ Meteor.publish('Events', function (options, search) {
         qq['$and'].push({cost: 'FREE'});
     }
 
+    console.log('search: ' + JSON.stringify(search));
+
     return Events.find(qq, options);
 
 });

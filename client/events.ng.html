@@ -1,4 +1,4 @@
-<ion-view view-title="Events">
+<ion-view view-title="Events ({{Events.length}})">
     <ion-content has-header="true" scroll="true">
 
         <div class="item-input-inset">
@@ -13,7 +13,7 @@
 
         <div style="padding-left: 10px;">
             <span>{{ formatDate(search.date) }}</span>
-            <span ng-if="search.onlyFree" class="cost-free">, FREE</span>
+            <span ng-if="search.onlyFree">, <span class="cost-free">FREE</span></span>
         </div>
 
         <ion-list class="list" can-swipe="true">

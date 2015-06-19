@@ -86,7 +86,7 @@
       });
 
       $scope.setDate = function() {
-        var options = {date: moment($scope.date,'YYYY/MM/DD').toDate(), mode: 'date', allowOldDates: false};
+        var options = {date: moment($scope.modalData.date,'YYYY/MM/DD').toDate(), mode: 'date', allowOldDates: false};
         //var options = {date: new Date(), mode: 'time'}; for time
         $cordovaDatePicker.show(options).then(function (date) {
           $scope.modalData.date = moment(date).format('YYYY/MM/DD');
