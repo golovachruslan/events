@@ -85,6 +85,8 @@ Meteor.startup(function () {
                     image: $item.find('.post-thumbnail img').attr('src'),
                     cost: $item.find('.cost').text(),
                     region: $item.find('.region').text(),
+                    startTime: null,
+                    endTime: null,
                     address:null,
                     geo:null,
                     categories: [],
