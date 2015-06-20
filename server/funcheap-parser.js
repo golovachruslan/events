@@ -135,6 +135,6 @@ Meteor.startup(function () {
 
     downloadEvents('2015/06/16');*/
 
-    downloadEvents('2015/06/20');
+    //downloadEvents('2015/06/20');
 
 });

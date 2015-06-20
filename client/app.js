@@ -48,7 +48,7 @@
   }]);
 
   app.controller('EventsCtrl',
-    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor) {
+    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor, $ionicLoading) {
 
       $scope.search = {
         query: '',
@@ -56,9 +56,35 @@
         onlyFree: false
       };
 
-      $meteor.autorun($scope, function() {
-        $meteor.subscribe('Events',{}, $scope.getReactively('search', true));
-        $scope.Events = $meteorCollection(Events);
+      $scope.sort = { title: 1 };
+
+      $scope.Events = $meteor.collection(function() {
+        return Events.find({}, {
+          sort : $scope.getReactively('sort')
+        });
+      });
+
+      $scope.showLoading = function (flag) {
+        /*if (flag) {
+          $ionicLoading.show({
+            template: '<ion-spinner icon="ripple"></ion-spinner>',
+            noBackdrop: true
+          });
+        } else {
+          $ionicLoading.hide();
+        }*/
+
+        $scope.loading = flag;
+      };
+
+      $scope.showLoading(true);
+
+      $meteor.autorun($scope, function () {
+        $meteor.subscribe('Events', {
+          sort: $scope.getReactively('sort')
+        }, $scope.getReactively('search', true)).finally(function () {
+          $scope.showLoading(false);
+        });
       });
 
       // Create our modal
@@ -74,6 +100,7 @@
       $scope.applyFilters = function () {
         angular.copy($scope.modalData, $scope.search);
         $scope.eventModal.hide();
+        $scope.showLoading(true);
       };
 
       $scope.closeNewTask = function() {
@@ -101,14 +128,6 @@
       $scope.formatDate = function (date) {
         return moment(date, "YYYY/MM/DD").format("dddd, MMMM Do");
       };
-
-      /*$ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });*/
 
     }
   );

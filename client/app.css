@@ -11,3 +11,16 @@ a {
 .cost-free {
     color: #5fd30a;
 }
+
+/*
+.loading-container .loading {
+    background-color: #fff;
+}*/
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    vertical-align: middle;
+    text-align: center;
+}

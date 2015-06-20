@@ -1,6 +1,5 @@
-<ion-view view-title="Events ({{Events.length}})">
+<ion-view view-title="{{ loading ? 'Loading Events...': 'Events (' + Events.length + ')' }}">
     <ion-content has-header="true" scroll="true">
-
         <div class="item-input-inset">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
@@ -11,12 +10,12 @@
             </button>
         </div>
 
-        <div style="padding-left: 10px;">
+        <div style="padding-left: 10px;padding-bottom: 3px;">
             <span>{{ formatDate(search.date) }}</span>
             <span ng-if="search.onlyFree">, <span class="cost-free">FREE</span></span>
         </div>
 
-        <ion-list class="list" can-swipe="true">
+        <ion-list class="list" can-swipe="true" ng-if="!loading">
             <ion-item ng-repeat="event in Events" class="item item-thumbnail-left" ui-sref="tabs.event({id:event._id})">
                 <img ng-src="{{event.image}}">
                 <h2>{{event.title}}</h2>
@@ -34,5 +33,14 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
+
+        <div class="center" ng-if="loading"><ion-spinner icon="ripple"></ion-spinner></div>
+
+        <div class="list" ng-if="!Events.length">
+            <div class="item">
+                No records found
+            </div>
+        </div>
+
     </ion-content>
 </ion-view>
