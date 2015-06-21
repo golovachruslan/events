@@ -63,7 +63,7 @@ Meteor.startup(function () {
 
     };
 
-    var downloadEvents = function (date) {
+    var downloadEvents = function (date, link) {
 
         var futDownloadEvents = new Future(),
             events = [];
@@ -101,6 +101,10 @@ Meteor.startup(function () {
                 parseEvent(link);
             });
 
+            if (window.$('.next.page-numbers').length) {
+                downloadEvents(date, window.$('.next.page-numbers').attr('href'));
+            }
+
             futDownloadEvents.return(null);
 
         });
@@ -108,7 +112,7 @@ Meteor.startup(function () {
         jsdom.env(
             {
                 scripts: ["http://code.jquery.com/jquery.js"],
-                url: "http://sf.funcheap.com/" + date + "/",
+                url: link ? link : "http://sf.funcheap.com/" + date + "/",
                 headers: {
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
                     "Accept-Language": "en-US,en;q=0.8,ru;q=0.6",
@@ -137,6 +141,6 @@ Meteor.startup(function () {
 
     downloadEvents('2015/06/16');*/
 
-    //downloadEvents('2015/06/20');
+    downloadEvents('2015/06/20');
 
 });
