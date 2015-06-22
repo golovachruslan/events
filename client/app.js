@@ -27,6 +27,15 @@
           abstract: true,
           templateUrl: 'client/index.ng.html'
       })
+        .state('tabs.map', {
+          url : '/map',
+          views: {
+            'events-tab': {
+              templateUrl: 'client/map.ng.html',
+              controller: 'MapCtrl'
+            }
+          }
+        })
       .state('tabs.events', {
         url : '/events',
           views: {
@@ -48,7 +57,7 @@
   }]);
 
   app.controller('EventsCtrl',
-    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor, $ionicLoading) {
+    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor, $ionicLoading, $timeout) {
 
       $scope.search = {
         query: '',
@@ -97,6 +106,16 @@
         animation: 'slide-in-up'
       });
 
+      $ionicModal.fromTemplateUrl('client/map.ng.html', function (modal) {
+
+        $scope.mapModal = modal;
+
+      }, {
+        scope: $scope,
+        //controller: 'MapCtrl',
+        animation: 'slide-in-up'
+      });
+
       $scope.applyFilters = function () {
         angular.copy($scope.modalData, $scope.search);
         $scope.eventModal.hide();
@@ -105,6 +124,10 @@
 
       $scope.closeNewTask = function() {
         $scope.eventModal.hide();
+      };
+
+      $scope.closeMap = function() {
+        $scope.mapModal.hide();
       };
 
       //Cleanup the modal when we are done with it!
@@ -125,6 +148,70 @@
         $scope.eventModal.show();
       };
 
+      $scope.showMap = function () {
+
+
+        if(window.StatusBar) {
+          // org.apache.cordova.statusbar required
+          StatusBar.styleDefault();
+        }
+
+        //$scope.mapModal.show();
+
+         /* var div = document.getElementById("map_canvas");
+          var map = plugin.google.maps.Map.getMap(div);*/
+
+        var map = plugin.google.maps.Map.getMap();
+
+        map.clear();
+
+        map.setOptions({
+          mapType: plugin.google.maps.MapTypeId.ROADMAP,
+          controls: {
+            'compass': true,
+            'myLocationButton': true,
+            'indoorPicker': true,
+            'zoom': true // Only for Android
+          },
+          'gestures': {
+            'scroll': true,
+            'tilt': false,
+            'rotate': true,
+            'zoom': true
+          }
+        });
+
+        var geo = $scope.Events[0].geo;
+
+        var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
+        map.setCenter(cc);
+
+        map.setAllGesturesEnabled(true);
+
+        map.showDialog();
+
+        map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
+
+          _.each($scope.Events, function (item) {
+
+            var geo = item.geo;
+            var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
+
+            map.addMarker({
+              'position': cc,
+              'title': item.title
+            }, function (marker) {
+
+              marker.showInfoWindow();
+
+            });
+
+
+          });
+
+        });
+      };
+
       $scope.formatDate = function (date) {
         return moment(date, "YYYY/MM/DD").format("dddd, MMMM Do");
       };
@@ -140,6 +227,39 @@
         $scope.getDate = function () {
           return moment($scope.event.date, "YYYY/MM/DD").format("dddd, MMMM Do");
         }
+
+      }
+  );
+
+  app.controller('MapCtrl',
+      function ($scope, $meteorCollection, $rootScope, $meteor, $stateParams, $timeout) {
+
+        $timeout(function () {
+
+          var div = document.getElementById("map_canvas");
+          var map = plugin.google.maps.Map.getMap(div);
+
+          $scope.$on('$destroy', function() {
+            alert(1);
+          });
+
+          map.setOptions({
+            mapType: plugin.google.maps.MapTypeId.ROADMAP,
+            controls: {
+              compass: true,
+              myLocationButton: true
+            },
+            gestures: {
+              scroll: true,
+              tilt: true,
+              rotate: true,
+              zoom: true
+            }
+          });
+
+          map.refreshLayout();
+
+        },2000);
 
       }
   );
