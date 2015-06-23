@@ -91,9 +91,7 @@
       $meteor.autorun($scope, function () {
         $meteor.subscribe('Events', {
           sort: $scope.getReactively('sort')
-        }, $scope.getReactively('search', true)).finally(function () {
-          $scope.showLoading(false);
-        });
+        }, $scope.getReactively('search', true)).finally(() => $scope.showLoading(false));
       });
 
       // Create our modal
@@ -183,8 +181,10 @@
 
         var geo = $scope.Events[0].geo;
 
-        var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
-        map.setCenter(cc);
+        if(geo) {
+          var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
+          map.setCenter(cc);
+        }
 
         map.setAllGesturesEnabled(true);
 
@@ -195,16 +195,19 @@
           _.each($scope.Events, function (item) {
 
             var geo = item.geo;
-            var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
 
-            map.addMarker({
-              'position': cc,
-              'title': item.title
-            }, function (marker) {
+            if(geo) {
+                var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
 
-              marker.showInfoWindow();
+                map.addMarker({
+                  'position': cc,
+                  'title': item.title
+                }, function (marker) {
 
-            });
+                  marker.showInfoWindow();
+
+                });
+            }
 
 
           });
