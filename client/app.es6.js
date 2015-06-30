@@ -125,9 +125,8 @@
 
         map.clear();
 
-        map.setZoom(9);
-
         map.setOptions({
+          backgroundColor: 'white',
           mapType: plugin.google.maps.MapTypeId.ROADMAP,
           controls: {
             'compass': true,
@@ -143,73 +142,54 @@
           }
         });
 
-
-        var getCenterOfCoordinates = function (geoCoordinates) {
-
-            if (geoCoordinates.length == 1) {
-                return geoCoordinates[0];
-            }
-
-            var x = 0;
-            var y = 0;
-            var z = 0;
-
-            _.each(geoCoordinates, function (geoCoordinate) {
-                var latitude = geoCoordinate.lat * Math.PI / 180;
-                var longitude = geoCoordinate.lng * Math.PI / 180;
-
-                x += Math.cos(latitude) * Math.cos(longitude);
-                y += Math.cos(latitude) * Math.sin(longitude);
-                z += Math.sin(latitude);
-            });
-
-            var total = geoCoordinates.length;
-
-            x = x / total;
-            y = y / total;
-            z = z / total;
-
-            var centralLongitude = Math.atan2(y, x);
-            var centralSquareRoot = Math.sqrt(x * x + y * y);
-            var centralLatitude = Math.atan2(z, centralSquareRoot);
-            return new plugin.google.maps.LatLng(centralLatitude * 180 / Math.PI, centralLongitude * 180 / Math.PI);
-
-        };
-
         map.setAllGesturesEnabled(true);
 
         map.showDialog();
 
-        map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
+          map.addEventListener(plugin.google.maps.event.MAP_READY, function () {
 
-            coordinates = [];
+              var coordinates = [],
+                  bounds = new plugin.google.maps.LatLngBounds();
 
-          _.each($scope.Events, function (item) {
+              _.each($scope.Events, function (item) {
 
-            var geo = item.geo;
+                  var geo = item.geo;
 
-            if(geo) {
+                  if (geo) {
 
-                var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
+                      var cc = new plugin.google.maps.LatLng(geo.latitude, geo.longitude);
 
-                map.addMarker({
-                  'position': cc,
-                  'title': item.title
-                }, function (marker) {
+                      map.addMarker({
+                          //'icon': "http://cdn.1001freedownloads.com/icon/thumb/371594/Map-Marker-Flag-4-Left-Pink-icon.png",
+                          'position': cc,
+                          'animation': plugin.google.maps.Animation.BOUNCE,
+                          'title': item.title,
+                          'snippet': item.description,
+                          'styles': {
+                              'font-style': 'italic',
+                              'font-weight': 'bold'
+                          }
+                      }, function (marker) {
 
-                  marker.showInfoWindow();
+                          //marker.showInfoWindow();
 
-                });
+                      });
 
-                coordinates.push(cc);
-            }
+                      coordinates.push(cc);
+
+                      bounds.extend(cc);
+                  }
+
+              });
+
+              map.moveCamera({
+                  'target': bounds.getCenter(),
+                  'zoom': 8
+              }, function () {
+
+              });
 
           });
-
-          var t = getCenterOfCoordinates(coordinates);
-          map.setCenter(t);
-
-        });
       };
 
       $scope.formatDate = function (date) {
