@@ -19,3 +19,5 @@ momentjs:moment
 erasaur:meteor-lodash
 aldeed:geocoder
 geojson-utils
+service-configuration
+mrt:accounts-facebook-cordova

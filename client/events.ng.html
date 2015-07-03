@@ -1,16 +1,19 @@
 <ion-view view-title="{{ loading ? 'Loading Events...': 'Events (' + Events.length + ')' }}">
     <ion-content has-header="true" scroll="true">
+    <img ng-src="{{$root.currentUser.profile.avatar}}">
+    {{$root.currentUser}}
+            <button class="button button-small" ng-click="login()">
+                Login
+            </button>
         <div class="item-input-inset">
             <button class="button button-small" ng-click="showFilters()" style="margin-right: 10.66667px;">
                 Filter
             </button>
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search" placeholder="Search" ng-model="search.query">
+                <input type="search" placeholder="Search" ng-model="search.query" 
+                ng-model-options="{debounce: { 'default': 500, 'blur': 0 } }">
             </label>
-            <!--<button class="button button-small" ui-sref="tabs.map()">
-                Map
-            </button>-->
             <button class="button button-small" ng-click="showMap()">
                 Map
             </button>
@@ -30,7 +33,7 @@
                 <p>{{event.region}}</p>
 
                 <ion-option-button class="button-positive"
-                                   ng-click="share(item)">
+                                   ng-click="save(item)">
                     Save
                 </ion-option-button>
                 <ion-option-button class="button-info"

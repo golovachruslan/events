@@ -9,6 +9,11 @@ App.configurePlugin('plugin.google.maps', {
  API_KEY_FOR_ANDROID: 'AIzaSyDpKX2Ov0cN03LLH0PK8qnKknaYdPTJTlI'
 });
 
+App.configurePlugin('com.phonegap.plugins.facebookconnect', {
+ APP_ID: '1616229415285614',
+ APP_NAME: '40a0da18ade1f00a88eeb3e7f6070f8e'
+});
+
 /*
 App.info({
   id: 'com.example.matt.uber',

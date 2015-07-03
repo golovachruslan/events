@@ -24,3 +24,6 @@ Follow this steps to use ngCordova in your app:
 * Add the related ngCordova module to the angularMeteor requires:
  * `angularMeteor.requires.push('ngCordova.plugins.datePicker');`
 * Use the services that the module offers!
+
+
+meteor run ios --settings settings.json

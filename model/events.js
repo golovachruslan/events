@@ -1,6 +1,6 @@
 Events = new Meteor.Collection("Events");
 
-Ground.Collection(Events, 'Events');
+Ground.Collection(Events);
 
 Meteor.methods({
     saveEvent: function (event) {

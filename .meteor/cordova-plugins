@@ -1,2 +1,4 @@
+com.phonegap.plugins.facebookconnect@https://github.com/Wizcorp/phonegap-facebook-plugin/tarball/0e61babb65bc1716b957b6294c7fdef3ce6ace79
 com.plugin.datepicker@https://github.com/VitaliiBlagodir/cordova-plugin-datepicker/tarball/1e0f4bf47b0c343f39c64287eae9c3b632edb7f5
+org.apache.cordova.inappbrowser@0.6.0
 plugin.google.maps@1.2.5

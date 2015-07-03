@@ -16,7 +16,22 @@
     angular.element(document).ready(onReady);
   }
 
-  app.config(['$urlRouterProvider', '$stateProvider',
+  app.run(function($ionicPlatform) {
+
+    $ionicPlatform.ready(function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
+      if(window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        StatusBar.styleDefault();
+      }
+
+    });
+
+  }).config(['$urlRouterProvider', '$stateProvider',
     function($urlRouterProvider, $stateProvider){
 
     $urlRouterProvider.otherwise("/tab/events");
@@ -52,7 +67,7 @@
 
       $scope.search = {
         query: '',
-        date: moment(new Date()).format('YYYY/MM/DD'),
+        date: moment(new Date()).format('YYYY/MM/D'),
         onlyFree: false
       };
 
@@ -66,6 +81,21 @@
 
       $scope.showLoading = function (flag) {
         $scope.loading = flag;
+      };
+
+      $scope.login = function() {
+
+        $meteor.loginWithFacebook(
+          {
+              loginStyle:'popup',
+              requestPermissions : [
+              "email",
+              "public_profile", 
+              "user_friends"
+              ]
+            
+          });
+
       };
 
       $scope.showLoading(true);
@@ -96,15 +126,19 @@
         $scope.eventModal.hide();
       };
 
+      $scope.save = function() {
+
+      };
+
       //Cleanup the modal when we are done with it!
       $scope.$on('$destroy', function() {
         $scope.eventModal.remove();
       });
 
       $scope.setDate = function() {
-        var options = {date: moment($scope.modalData.date,'YYYY/MM/DD').toDate(), mode: 'date', allowOldDates: false};
+        var options = {date: moment($scope.modalData.date,'YYYY/MM/D').toDate(), mode: 'date', allowOldDates: false};
         $cordovaDatePicker.show(options).then(function (date) {
-          $scope.modalData.date = moment(date).format('YYYY/MM/DD');
+          $scope.modalData.date = moment(date).format('YYYY/MM/D');
         });
       };
 
@@ -114,12 +148,6 @@
       };
 
       $scope.showMap = function () {
-
-
-        if(window.StatusBar) {
-          // org.apache.cordova.statusbar required
-          StatusBar.styleDefault();
-        }
 
         var map = plugin.google.maps.Map.getMap();
 
@@ -162,7 +190,7 @@
                       map.addMarker({
                           //'icon': "http://cdn.1001freedownloads.com/icon/thumb/371594/Map-Marker-Flag-4-Left-Pink-icon.png",
                           'position': cc,
-                          'animation': plugin.google.maps.Animation.BOUNCE,
+                          //'animation': plugin.google.maps.Animation.BOUNCE,
                           'title': item.title,
                           'snippet': item.description,
                           'styles': {
