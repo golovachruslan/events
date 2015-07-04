@@ -32,7 +32,7 @@
     });
 
   }).config(['$urlRouterProvider', '$stateProvider',
-    function($urlRouterProvider, $stateProvider){
+    function($urlRouterProvider, $stateProvider) {
 
     $urlRouterProvider.otherwise("/tab/events");
 
@@ -74,10 +74,30 @@
 
       $scope.sort = { title: 1 };
 
-      $scope.Events = $meteor.collection(function() {
-        return Events.find({}, {
-          sort : $scope.getReactively('sort')
+      $scope.$watch('search', function() {
+        $scope.showLoading(true);
+      }, true);
+
+      $meteor.subscribe('Events', $scope.sort, $scope.search).finally(() => $scope.showLoading(false));
+
+      $meteor.autorun($scope, function () {
+
+        $scope.Events = $meteor.collection(function() {
+          
+          var collection = Events.find({
+            'title': {'$regex': '.*' + ($scope.getReactively('search.query') || '') + '.*', '$options': 'i'}
+          }, 
+          {
+            sort : $scope.getReactively('sort')
+          });
+
+          setTimeout(function() {
+            $scope.showLoading(false);
+          },0);
+
+          return collection;
         });
+
       });
 
       $scope.showLoading = function (flag) {
@@ -100,12 +120,6 @@
       };
 
       $scope.showLoading(true);
-
-      $meteor.autorun($scope, function () {
-        $meteor.subscribe('Events', {
-          sort: $scope.getReactively('sort')
-        }, $scope.getReactively('search', true)).finally(() => $scope.showLoading(false));
-      });
 
       // Create our modal
       $ionicModal.fromTemplateUrl('client/filters.ng.html', function (modal) {
