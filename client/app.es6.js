@@ -63,7 +63,8 @@
   }]);
 
   app.controller('EventsCtrl',
-    function ($scope, $meteorCollection, $ionicModal, $rootScope, $ionicPopup, $cordovaDatePicker, $meteor, $ionicLoading, $timeout) {
+    function ($scope, $meteorCollection, $ionicModal, 
+      $rootScope, $ionicPopup, $cordovaDatePicker, $meteor, $ionicLoading, $timeout) {
 
       $scope.search = {
         query: '',
@@ -174,7 +175,7 @@
 
         map.showDialog();
 
-          map.addEventListener(plugin.google.maps.event.MAP_READY, function () {
+        map.addEventListener(plugin.google.maps.event.MAP_READY, function () {
 
               var coordinates = [],
                   bounds = new plugin.google.maps.LatLngBounds();
